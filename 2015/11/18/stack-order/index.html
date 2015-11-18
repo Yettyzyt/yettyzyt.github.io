@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      css层叠顺序探究 | Yetty&#39;s blog 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="yetty">
+    
+    
+      <meta name="description" content="嗯~一个比较基础但容易混乱的知识点~
+首先上一大段文绉绉的w3c规范以表明这是一篇严肃的学术文章（觉得太长可先跳过~）：
+
+In CSS 2.1, each box has a position in three dimensions. In addition to their horizontal and vertical positions, boxes lie along a “z-axis">
+    
+
+    <meta name="description" content="嗯~一个比较基础但容易混乱的知识点~
+首先上一大段文绉绉的w3c规范以表明这是一篇严肃的学术文章（觉得太长可先跳过~）：
+
+In CSS 2.1, each box has a position in three dimensions. In addition to their horizontal and vertical positions, boxes lie along a “z-axis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="css层叠顺序探究 | Yetty's blog">
+<meta property="og:url" content="http://yettyzyt.github.io/2015/11/18/stack-order/index.html">
+<meta property="og:site_name" content="Yetty's blog">
+<meta property="og:description" content="嗯~一个比较基础但容易混乱的知识点~
+首先上一大段文绉绉的w3c规范以表明这是一篇严肃的学术文章（觉得太长可先跳过~）：
+
+In CSS 2.1, each box has a position in three dimensions. In addition to their horizontal and vertical positions, boxes lie along a “z-axis">
+<meta property="og:image" content="http://yettyzyt.github.io/z-index3.png">
+<meta property="og:image" content="http://yettyzyt.github.io/z-index4.png">
+<meta property="og:image" content="http://yettyzyt.github.io/z-index.png">
+<meta property="og:image" content="http://yettyzyt.github.io/z-index2.png">
+<meta property="og:image" content="http://yettyzyt.github.io/1.png">
+<meta property="og:image" content="http://yettyzyt.github.io/css2.png">
+<meta property="og:image" content="http://yettyzyt.github.io/ie.png">
+<meta property="og:image" content="http://yettyzyt.github.io/opacity.png">
+<meta property="og:updated_time" content="2015-11-18T12:42:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="css层叠顺序探究 | Yetty's blog">
+<meta name="twitter:description" content="嗯~一个比较基础但容易混乱的知识点~
+首先上一大段文绉绉的w3c规范以表明这是一篇严肃的学术文章（觉得太长可先跳过~）：
+
+In CSS 2.1, each box has a position in three dimensions. In addition to their horizontal and vertical positions, boxes lie along a “z-axis">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css" type="text/css">
+
+    <script src="/js/jquery.min.js"></script>
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">Yetty&#39;s blog</a></h1>
+
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">
+          blog
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">Blog</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">About</a></li>
+              
+                
+                <li class="navigation__item"><a href="/blogroll" title="" class="">Blogroll</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+------------------------------ -->
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/someus/huno" title="Huno on GitHub">
+      <i class='icon icon-social-github'></i>
+      <span class="label">GitHub</span>
+    </a>
+  </li>
+
+  </ul>
+</nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+    
+      
+      <div class="post-meta">
+        <time datetime="2015-11-18" class="post-meta__date date">2015-11-18</time> &#8226; 
+
+        <span class="post-meta__tags tags">
+
+            <font class="categories">
+              
+            </font>
+            
+
+        </span>
+      </div>
+      
+
+      <h1 class="post-title">css层叠顺序探究</h1>
+    </header>
+
+    <section class="post">
+      <p>嗯~一个比较基础但容易混乱的知识点~</p>
+<p>首先上一大段文绉绉的w3c规范以表明这是一篇严肃的学术文章（觉得太长可先跳过~）：</p>
+<blockquote>
+<p>In CSS 2.1, each box has a position in three dimensions. In addition to their horizontal and vertical positions, boxes lie along a “z-axis” and are formatted one on top of the other. Z-axis positions are particularly relevant when boxes overlap visually.</p>
+<p>The order in which the rendering tree is painted onto the canvas is described in terms of stacking contexts. Stacking contexts can contain further stacking contexts. A stacking context is atomic from the point of view of its parent stacking context; boxes in other stacking contexts may not come between any of its boxes.</p>
+<p>Each box belongs to one stacking context. Each positioned box in a given stacking context has an integer stack level, which is its position on the z-axis relative other stack levels within the same stacking context. Boxes with greater stack levels are always formatted in front of boxes with lower stack levels. Boxes may have negative stack levels. Boxes with the same stack level in a stacking context are stacked back-to-front according to document tree order.</p>
+<p>——<a href="http://www.w3.org/TR/CSS2/visuren.html#propdef-z-index" target="_blank" rel="external">W3C</a></p>
+</blockquote>
+<p>其实说人话，大致意思就是：</p>
+<p><strong>1. 每个盒模型的位置是三维的，除了x轴和y轴，还有一个表示层叠的z轴；</strong></p>
+<p><strong>2. z轴上的位置决定了我们看到的盒模型之间的层叠效果（谁盖住谁）。</strong></p>
+<p>上述规范还解释了层叠上下文的特点以及盒模型的层叠级别，下面我们通过栗子慢慢探究。</p>
+<h2 id="浮动与行内">浮动与行内</h2><p><strong>eg.1-eg.2共同结构与样式</strong></p>
+<p>html:</p>
+<pre><code>&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div1"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div2"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div3"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div4"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div5"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+</code></pre><p>css:</p>
+<pre><code><span class="tag">div</span><span class="rules">{<span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">1px</span> <span class="hexcolor">#000</span> dashed</span></span>;<span class="rule"><span class="attribute">height</span>:<span class="value"><span class="number">200px</span></span></span>;<span class="rule"><span class="attribute">width</span>:<span class="value"><span class="number">300px</span></span></span>;<span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span>;}</span>
+<span class="class">.div1</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#FF4363</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value"><span class="number">0</span> <span class="number">0</span></span></span>;}</span>
+<span class="class">.div2</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#FC9D99</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">170px</span> <span class="number">20px</span></span></span>;}</span>
+<span class="class">.div3</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#F9CCAD</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">160px</span> <span class="number">40px</span></span></span>;}</span>
+<span class="class">.div4</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#C7C7A8</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">150px</span> <span class="number">60px</span></span></span>;}</span>
+<span class="class">.div5</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#84AF9B</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">140px</span> -<span class="number">10px</span></span></span>;}</span>
+</code></pre><p><strong>eg.1：常规流中非定位非行内元素的层叠情况</strong></p>
+<p><img src="z-index3.png"></p>
+<p><strong>＊ 结论： 常规流中非定位非行内的元素根据html顺序，按照“后来居上”的规则层叠。</strong></p>
+<hr>
+<p><strong>eg.2：定位元素／行内元素／浮动元素之间的层叠关系</strong></p>
+<p><img src="z-index4.png"></p>
+<p><strong>＊ 结论： 层叠顺序如下（高➡️低）：</strong></p>
+<ul>
+<li><strong>z-index为auto的定位元素</strong></li>
+<li><strong>常规流内行内非定位元素</strong></li>
+<li><strong>非定位的浮动元素</strong></li>
+<li><strong>常规流内非行内非定位元素</strong></li>
+<li><strong>z-index为负的定位元素</strong></li>
+</ul>
+<h2 id="为定位元素设置z-index">为定位元素设置z-index</h2><p>首先，你必须了解以下两点：</p>
+<ol>
+<li>每个定位元素都有一个整型的层叠级别（stack level）；</li>
+<li>z-index属性只对定位元素有效。</li>
+</ol>
+<p><strong>eg.3-eg.4共同结构与样式:</strong> </p>
+<p>html:</p>
+<pre><code>&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div1"</span> style=<span class="string">"position:relative"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div2"</span> style=<span class="string">"position:relative"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div3"</span> style=<span class="string">"position:relative"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div4"</span> style=<span class="string">"position:relative"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div5"</span> style=<span class="string">"position:relative"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+</code></pre><p>css:</p>
+<pre><code><span class="tag">div</span><span class="rules">{<span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">1px</span> <span class="hexcolor">#000</span> dashed</span></span>;<span class="rule"><span class="attribute">height</span>:<span class="value"><span class="number">200px</span></span></span>;<span class="rule"><span class="attribute">width</span>:<span class="value"><span class="number">300px</span></span></span>;<span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span>;}</span>
+<span class="class">.div1</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#FF4363</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value"><span class="number">0</span> <span class="number">0</span></span></span>;}</span>
+<span class="class">.div2</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#FC9D99</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">170px</span> <span class="number">20px</span></span></span>;}</span>
+<span class="class">.div3</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#F9CCAD</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">160px</span> <span class="number">40px</span></span></span>;}</span>
+<span class="class">.div4</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#C7C7A8</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">150px</span> <span class="number">60px</span></span></span>;}</span>
+<span class="class">.div5</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#84AF9B</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value">-<span class="number">140px</span> -<span class="number">10px</span></span></span>;}</span>
+</code></pre><p><strong>eg3: 5个定位元素在未设置z-index时的层叠情况</strong></p>
+<p><img src="z-index.png"></p>
+<p><strong>＊ 结论： z-index为auto的定位元素根据html顺序，按照“后来居上”的规则层叠。</strong></p>
+<hr>
+<p><strong>eg4: 5个定位元素设置不同z-index时的层叠情况</strong></p>
+<p><img src="z-index2.png"></p>
+<p><strong>＊ 结论：</strong></p>
+<ol>
+<li><strong>定位元素的层叠级别由z-index的值决定，z-index为auto则其层叠级别为0（注意：只是层级为0，其z-index值仍为auto）；</strong></li>
+<li><strong>同一层叠上下文中，层叠级别大的元素位于层叠级别小的元素之上；</strong></li>
+<li><strong>同一层叠上下文中，层叠级别相同的元素根据html顺序决定元素的层叠关系，遵循“后来居上”原则。</strong></li>
+</ol>
+<h2 id="层叠顺序（stack_order）">层叠顺序（stack order）</h2><p>结合上面的例子进行总结，可得每一个层叠上下文内的层叠顺序：</p>
+<blockquote>
+<p>Within each stacking context, the following layers are painted in back-to-front order:</p>
+<ol>
+<li>the background and borders of the element forming the stacking context.</li>
+<li>the child stacking contexts with negative stack levels (most negative first).</li>
+<li>the in-flow, non-inline-level, non-positioned descendants.</li>
+<li>the non-positioned floats.</li>
+<li>the in-flow, inline-level, non-positioned descendants, including inline tables and inline blocks.</li>
+<li>the child stacking contexts with stack level 0 and the positioned descendants with stack level 0.</li>
+<li>the child stacking contexts with positive stack levels (least positive first).</li>
+</ol>
+<p>—<a href="http://www.w3.org/TR/CSS2/visuren.html#propdef-z-index" target="_blank" rel="external">W3C</a></p>
+</blockquote>
+<p>规范中的描述比较乏味，可结合<a href="http://www.w3help.org/zh-cn/kb/013" target="_blank" rel="external">w3help</a>中的一张图片进行理解：</p>
+<blockquote>
+<p><img src="1.png" width="600"></p>
+</blockquote>
+<h2 id="层叠上下文">层叠上下文</h2><p>看完上述的例子，对于层叠顺序应该大致了解了。</p>
+<p>但细心的猿们会发现，突然冒出一个“层叠上下文”，这又是个什么鬼？</p>
+<h3 id="层叠上下文的特点">层叠上下文的特点</h3><blockquote>
+<ol>
+<li>stacking context可以嵌套</li>
+<li>每个stacking context相对于兄弟元素是完全独立的，其内部规则不会影响到外部</li>
+<li>每个stacking context元素都会被父stacking context当做一个元素施加stacking规则<br>——<a href="http://blog.angular.in/css-stacking-contextli-na-xie-xian-wei-ren-zhi-de-keng/" target="_blank" rel="external">Abruzzi</a></li>
+</ol>
+</blockquote>
+<h3 id="层叠上下文的创建">层叠上下文的创建</h3><h4 id="css2">css2</h4><hr>
+<blockquote>
+<p>The root element forms the root stacking context. Other stacking contexts are generated by any positioned element (including relatively positioned elements) having a computed value of ‘z-index’ other than ‘auto’. Stacking contexts are not necessarily related to containing blocks.</p>
+<p>——<a href="http://www.w3.org/TR/CSS2/visuren.html#propdef-z-index" target="_blank" rel="external">W3C</a></p>
+</blockquote>
+<p><strong>CSS2中规定创建层叠上下文的两种情况：</strong></p>
+<ol>
+<li><strong>根元素（html）</strong></li>
+<li><strong>定位元素（absolute/relative）且z-index的值不为auto</strong></li>
+</ol>
+<p>注：在同一层叠上下文中，父元素、子元素与自身都被当作是并级关系进行层叠级别的比较。他们之间可能互相层叠。</p>
+<p><strong>eg.5：z-index为auto的定位元素没有创建层叠上下文</strong></p>
+<p>html:</p>
+<pre><code>&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div1"</span> style=<span class="string">"position:relative"</span>&gt;
+    &lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div1_1"</span> style=<span class="string">"position:relative;z-index:9"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"div2"</span> style=<span class="string">"position:relative"</span>&gt;&lt;/<span class="keyword">div</span>&gt;
+</code></pre><p>css:</p>
+<pre><code><span class="tag">div</span><span class="rules">{<span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">1px</span> <span class="hexcolor">#000</span> dashed</span></span>;<span class="rule"><span class="attribute">height</span>:<span class="value"><span class="number">200px</span></span></span>;<span class="rule"><span class="attribute">width</span>:<span class="value"><span class="number">400px</span></span></span>;<span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span>;}</span>
+<span class="class">.div1</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#FF4363</span></span></span>;}</span>
+<span class="class">.div1_1</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#FC9D99</span></span></span>;<span class="rule"><span class="attribute">margin</span>:<span class="value"><span class="number">100px</span> <span class="number">0</span> <span class="number">0</span> <span class="number">50px</span></span></span>;<span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">300px</span></span></span>;}</span>
+<span class="class">.div2</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#F9CCAD</span></span></span>;<span class="rule"><span class="attribute">line-height</span>:<span class="value"> <span class="number">300px</span></span></span>;}</span>
+</code></pre><p><img src="css2.png"></p>
+<p>分析上述例子：</p>
+<ul>
+<li>前提：<ol>
+<li>div1、div1_1、div2都是定位元素</li>
+<li>div1、div2都没有设置z-index值；</li>
+</ol>
+</li>
+<li>假设：div1与div2创建了层叠上下文：<ol>
+<li>不同层叠上下文之间是相对独立的，div1_1属于div1所创建的层叠上下文，与div2所创建的层叠上下文无关；</li>
+<li>根据“后来居上”原则，则div2应该在div1及其子元素div1_1之上；</li>
+</ol>
+</li>
+<li>由上述例子可得，div1的子元素div1_1在div2之上； </li>
+<li>因此div1、div2没有创建层叠上下文。</li>
+</ul>
+<p><strong>＊ 结论： z-index为auto的定位元素不会创建新的层叠上下文。</strong></p>
+<hr>
+<p><strong>IE中的BUG：</strong></p>
+<p>在IE6-7浏览器中测试eg.5：</p>
+<p><img src="ie.png"></p>
+<p><strong>＊ 结论： ie6-7中，z-index为auto的定位元素也会创建新的层叠上下文。</strong></p>
+<h4 id="css3">css3</h4><hr>
+<blockquote>
+<p>A stacking context is formed, anywhere in the document, by any element which is either</p>
+<ul>
+<li>the root element (HTML),</li>
+<li>positioned (absolutely or relatively) with a z-index value other than “auto”,</li>
+<li>a flex item with a z-index value other than “auto”,that is the parent element display: flex|inline-flex,</li>
+<li>elements with an opacity value less than 1. (See the specification for opacity),</li>
+<li>elements with a transform value other than “none”,</li>
+<li>elements with a mix-blend-mode value other than “normal”,</li>
+<li>elements with a filter value other than “none”,</li>
+<li>elements with isolation set to “isolate”,</li>
+<li>position: fixed</li>
+<li>specifying any attribute above in will-change even if you don’t specify values for these attributes directly (See this post)</li>
+<li>elements with -webkit-overflow-scrolling set to “touch”</li>
+</ul>
+<p>——<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context" target="_blank" rel="external">MDN</a></p>
+</blockquote>
+<p><strong>CSS3中规定创建层叠上下文的十种情况：</strong></p>
+<ul>
+<li><strong>根元素 (HTML)</strong></li>
+<li><strong>绝对（absolute）定位或相对（relative）定位且 z-index 值不为”auto”</strong></li>
+<li><strong>一个 flex 项目(flex item)，且 z-index 值不为 “auto”，也就是父元素 display: flex|inline-flex</strong></li>
+<li><strong>元素的 opacity 属性值小于 1（参考 the specification for opacity）</strong></li>
+<li><strong>元素的 transform 属性值不为 “none”</strong></li>
+<li><strong>元素的 mix-blend-mode 属性值不为 “normal”</strong></li>
+<li><strong>元素的 isolation 属性被设置为 “isolate”</strong></li>
+<li><strong>在 mobile WebKit 和 Chrome 22+ 内核的浏览器中，position: fixed 总是创建一个新的层叠上下文, 即使 z-index 的值是 “auto”</strong></li>
+<li><strong>在 will-change 中指定了任意 CSS 属性，即便你没有定义该元素的这些属性</strong></li>
+<li><strong>元素的 -webkit-overflow-scrolling 属性被设置 “touch”</strong></li>
+</ul>
+<hr>
+<p><strong>eg.6：opacity创建新的层叠上下文</strong></p>
+<p><img src="opacity.png"></p>
+<p>分析：</p>
+<blockquote>
+<p>If an element with opacity less than 1 is not positioned, implementations must paint the layer it creates, within its parent stacking context, at the same stacking order that would be used if it were a positioned element with ‘z-index: 0’ and ‘opacity: 1’. </p>
+<p>If an element with opacity less than 1 is positioned, the ‘z-index’ property applies as described in [CSS21], except that ‘auto’ is treated as ‘0’ since a new stacking context is always created.</p>
+<p>——<a href="http://www.w3.org/TR/css3-color/#transparency" target="_blank" rel="external">W3C</a></p>
+</blockquote>
+<p><strong>＊ 结论：</strong></p>
+<ol>
+<li><strong>如果元素设置opacity小于1但未定位，视为css2中元素定位／z-index:0且opacity:1的情况；</strong></li>
+<li><strong>如果元素设置opacity小于1且定位，z-index为auto，视为css2中元素定位且z-index:0的情况；</strong></li>
+<li><strong>如果元素设置opacity小于1且定位，z-index不为auto，则根据css2的描述层叠。</strong></li>
+</ol>
+<p>其他CSS3创建层叠上下文的元素情况与opacity相同，故不赘述。</p>
+<h4 id="层叠上下文的层级">层叠上下文的层级</h4><hr>
+<ol>
+<li>z-index值为auto的层叠上下文（z-index未设置的定位元素）层级为0；</li>
+<li>z-index值为0（根元素／z-index为0的定位元素／css3中提到的除根元素与定位元素之外的其他会创建层叠上下文的未定位或已定位无设置z-index的元素）的层叠上下文层级为0；</li>
+<li>z-index值已设置且不为0的层叠上下文层级（z-index已设置且不为0的定位元素）与z-index的值相等；</li>
+<li>相同层级的层叠上下文遵循“后来居上”的规则层叠。</li>
+</ol>
+<h2 id="小结">小结</h2><ol>
+<li>属于同一层叠上下文的元素（无论它们在结构上是兄弟或父子，甚至是祖孙），都遵循上文所述的层叠顺序；</li>
+<li>不同的层叠上下文之间，层级较大的层叠上下文元素及其内部元素位于层级小的层叠上下文元素及其内部元素之上；</li>
+<li>不同的层叠上下文之间互相独立；</li>
+<li>层叠上下文可嵌套，内部规则不影响外部。</li>
+</ol>
+
+    </section>
+
+    
+  </article>
+
+
+            <footer class="footer">
+    <span class="footer__copyright">&copy; 2014. All rights reserved.</span>
+    <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a> | Redesign by <a href="http://letiantian.me" title="">樂天</a></span>
+</footer>
+        </div>
+    </div>
+
+    <!-- The main JavaScript file for Casper -->
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    <script src="/js/jquery.imagesloaded.min.js"></script>
+    <script src="/js/gallery.js"></script>
+    <script src="/js/jquery.githubRepoWidget.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config"> 
+      MathJax.Hub.Config({ 
+        tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+    }); 
+    </script>
+
+    <!--kill ie6 -->
+    <!--[if IE 6]>
+      <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+    <![endif]-->
+
+    <!--  google analytics -->
+    <script>
+      // add your google analytics code here
+    </script>
+
+    <!-- totop -->
+    <div id="totop" style="position:fixed;bottom:50px;right:30px;cursor: pointer;">
+    <a title="back to top"><img style="width:30px;height:30px;" src="/images/totop.png"/></a>
+    </div>
+    <script>
+    (function($) { 
+      var upperLimit = 100;
+      var scrollElem = $('#totop');
+      var scrollSpeed = 500; 
+      scrollElem.hide();
+      $(window).scroll(function () {            
+        var scrollTop = $(document).scrollTop();       
+        if ( scrollTop > upperLimit ) {
+          $(scrollElem).stop().fadeTo(300, 1); // fade back in           
+        }else{       
+          $(scrollElem).stop().fadeTo(300, 0); // fade out
+        }
+      });
+      $(scrollElem).click(function(){
+        $('html, body').animate({scrollTop:0}, scrollSpeed); return false;
+      });
+    })(jQuery);
+    </script>
+
+    <!-- fancybox -->
+    
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+    <script src="/fancybox/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript">
+      (function($){
+        $('.fancybox').fancybox();
+      })(jQuery);
+    </script>
+    
+
+</body>
+</html>
